@@ -1,8 +1,8 @@
 import os
 from datetime import datetime
 
-from search_engine.util.parserHTML import Parser
-from search_engine.util.trie import Trie
+from util.parserHTML import Parser
+from util.trie import Trie
 
 t = Trie()
 
