@@ -1,8 +1,11 @@
+from search_engine.util.set import MySet
+
+
 class TrieNode:
     def __init__(self):
         self.children = {}  # mapa u sebi sadrzi kljuc(char) i value node
         self.word_finished = False  # indikator da li je rec zavrsena
-        self.files = []  # fajlovi koji sadrze unetu rec
+        self.files = MySet()
 
 
 class Trie:
@@ -20,8 +23,10 @@ class Trie:
             node = new_node
         node.word_finished = True  # rec je zavrsena
 
-        if file not in node.files:
-            node.files.append(file)
+        if file in node.files.elements:
+            node.files.elements[file] += 1  # uvecava se broj pronadjenih reci za taj fajl
+        else:
+            node.files.add(file)
 
     def search(self, word: str):
 
