@@ -34,8 +34,9 @@ def main():
             found, files = t.search(search_word.lower())
 
             if found:
-                for file in files:
-                    print(file)
+                for file in files.elements:
+                    print("\n", file, files.elements[file])
+
 
 def load_files(path):  # ubacivanje reci iz html fajlova
     for file_name in os.listdir(path):
