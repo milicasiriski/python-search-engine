@@ -13,8 +13,8 @@ g = Graph()
 
 def main():
 
-    # path = "C:\\Users\\Luka Doric\\Desktop\\python-2.7.7-docs-html"  # IZMENITI PUTANJU!
-    path = "C:\\Users\\Milica\\Desktop\\python-2.7.7-docs-html"
+    path = "C:\\Users\\Luka Doric\\Desktop\\python-2.7.7-docs-html"  # IZMENITI PUTANJU!
+    #path = "C:\\Users\\Milica\\Desktop\\python-2.7.7-docs-html"
 
     print("Starting search engine \n")
     print("Loading files, please wait.")
@@ -31,14 +31,52 @@ def main():
         if choice_menu_one.lower() == "x":
             break
         elif choice_menu_one.lower() == "y":
-            search_word = input("Unesite rec koju zelite da pretrazite:\n")  # osnovna pretraga sa jednom reci
 
-            found, files = t.search(search_word.lower())
+            while True:
 
-            if found:
-                calculate_ranks(files)
-                for file in files.elements:
-                    print("\n", file, files.elements[file])
+                choice_menu_two = input ("Za pretragu jedne reci unesite A/a\n"
+                                         "Za pretragu vise reci odvojene razmakom unesite B/b\n"
+                                         "Za pretragu dve reci odvojenih sa AND/OR/NOT unesite C/c\n"
+                                         "Za povratak na prethodni meni unesite X/x\n")
+
+                if choice_menu_two.lower() == "x":
+                    break
+
+                if choice_menu_two.lower() == "a":
+                    search_word = input("Unesite rec koju zelite da pretrazite:\n")  # osnovna pretraga sa jednom reci
+
+                    length_check = search_word.split()
+                    if len(length_check) != 1:
+                        print("Neispravan unos!")
+                        continue
+
+                    search_word = search_word.strip()
+
+                    found, files = t.search(search_word.lower())
+
+                    if found:
+                        calculate_ranks(files)
+                        for file in files.elements:
+                            print("\n", file, files.elements[file])
+
+                elif choice_menu_two.lower() == "b":
+                    search_text = input("Unesite reci koje zelite da pretrazite razdvojene razmakom:\n")
+
+                    result_set = MySet()
+                    search_words = search_text.split()
+
+                    for word in search_words:
+                        found, files = t.search(word.lower().strip())
+                        result_set = result_set.union(files)
+
+                    calculate_ranks(files)
+
+                    for file in files.elements:
+                        print("\n", file, files.elements[file])
+
+                elif choice_menu_two.lower() == "c":
+                    print("Jos uvek nije implementirano")
+
 
 
 def load_files(path):  # ubacivanje reci iz html fajlova
