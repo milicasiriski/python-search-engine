@@ -1,4 +1,4 @@
-from search_engine.util.set import MySet
+from util.set import MySet
 
 
 class TrieNode:
