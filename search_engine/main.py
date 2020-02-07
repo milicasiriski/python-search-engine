@@ -9,6 +9,9 @@ from util.trie import Trie
 
 t = Trie()
 g = Graph()
+all_files = MySet()
+
+
 
 
 def main():
@@ -22,6 +25,9 @@ def main():
     load_files(path)
     end = datetime.now()
     print("Vreme ucitavanja:", end - start)
+
+    for file in g.outgoing:
+        all_files.add(file)
 
     while True:
 
@@ -56,8 +62,8 @@ def main():
 
                     if found:
                         calculate_ranks(files)
-                        for file in files.elements:
-                            print("\n", file, files.elements[file])
+                        for f in files.elements:
+                            print("\n", f, files.elements[f])
 
                 elif choice_menu_two.lower() == "b":
                     search_text = input("Unesite reci koje zelite da pretrazite razdvojene razmakom:\n")
@@ -67,17 +73,82 @@ def main():
 
                     for word in search_words:
                         found, files = t.search(word.lower().strip())
-                        result_set = result_set.union(files)
+                        if found:
+                            result_set = result_set.union(files)
 
-                    calculate_ranks(files)
+                    calculate_ranks(result_set)
 
-                    for file in files.elements:
-                        print("\n", file, files.elements[file])
+                    for f in result_set.elements:
+                        print("\n", f, result_set.elements[f])
 
                 elif choice_menu_two.lower() == "c":
-                    print("Jos uvek nije implementirano")
+                    query = input("Unesite dve reci koje zelite odvojene separatorom AND/OR/NOT:\n"
+                                  "Primer unosa: word1 AND word2\n"
+                                  "Operator NOT moze biti unaran\n"
+                                  "Primer unosa: NOT word1\n")
 
+                    length_check = query.split()
 
+                    if not (len(length_check) != 2 or len(length_check) != 3):
+                        print("Niste uneli ispravan format!")
+                        continue
+
+                    if len(length_check) == 2 and length_check[0] != "NOT":
+                        print("Niste uneli ispravan format!")
+                        continue
+
+                    elif len(length_check) == 2 and length_check[0] == "NOT":
+                        search_word = length_check[1].strip()
+                        found, files = t.search(search_word.lower())
+                        result_set = all_files
+
+                        if found:
+                            result_set = all_files.minus(files)
+
+                        calculate_ranks(result_set)
+
+                        for f in result_set.elements:
+                            print("\n", f, result_set.elements[f])
+
+                    elif len(length_check) == 3 and length_check[1] == "OR":
+
+                        found1, files1 = t.search(length_check[0].lower().strip())
+                        found2, files2 = t.search(length_check[2].lower().strip())
+
+                        result_set = files1.union(files2)
+
+                        calculate_ranks(result_set)
+
+                        for f in result_set.elements:
+                            print("\n", f, result_set.elements[f])
+
+                    elif len(length_check) == 3 and length_check[1] == "NOT":
+
+                        found1, files1 = t.search(length_check[0].lower().strip())
+                        found2, files2 = t.search(length_check[2].lower().strip())
+
+                        result_set = files1.minus(files2)
+
+                        calculate_ranks(result_set)
+
+                        for f in result_set.elements:
+                            print("\n", f, result_set.elements[f])
+
+                    elif len(length_check) == 3 and length_check[1] == "AND":
+
+                        found1, files1 = t.search(length_check[0].lower().strip())
+                        found2, files2 = t.search(length_check[2].lower().strip())
+
+                        result_set = files1.intersect(files2)
+
+                        calculate_ranks(result_set)
+
+                        for f in result_set.elements:
+                            print("\n", f, result_set.elements[f])
+
+                    else:
+                        print("Nije ispravno unet upit."
+                              " Proverite da li ste uneli separatore AND/OR/NOT velikim slovima!\n")
 
 def load_files(path):  # ubacivanje reci iz html fajlova
     for file_name in os.listdir(path):
