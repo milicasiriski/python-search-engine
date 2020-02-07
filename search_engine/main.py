@@ -16,8 +16,8 @@ all_files = MySet()
 
 def main():
 
-    path = "C:\\Users\\Luka Doric\\Desktop\\python-2.7.7-docs-html"  # IZMENITI PUTANJU!
-    #path = "C:\\Users\\Milica\\Desktop\\python-2.7.7-docs-html"
+    # path = "C:\\Users\\Luka Doric\\Desktop\\python-2.7.7-docs-html"  # IZMENITI PUTANJU!
+    path = "C:\\Users\\Milica\\Desktop\\python-2.7.7-docs-html"
 
     print("Starting search engine \n")
     print("Loading files, please wait.")
