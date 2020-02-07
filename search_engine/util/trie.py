@@ -34,10 +34,10 @@ class Trie:
         for char in word:
             child = node.children.get(char)
             if child is None:
-                return False, None
+                return False, MySet()
             node = child
 
         if not node.word_finished:
-            return False, None
+            return False, MySet()
 
         return True, node.files

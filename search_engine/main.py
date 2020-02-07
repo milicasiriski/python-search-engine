@@ -16,8 +16,8 @@ all_files = MySet()
 
 def main():
 
-    # path = "C:\\Users\\Luka Doric\\Desktop\\python-2.7.7-docs-html"  # IZMENITI PUTANJU!
-    path = "C:\\Users\\Milica\\Desktop\\python-2.7.7-docs-html"
+    path = "C:\\Users\\Luka Doric\\Desktop\\python-2.7.7-docs-html"  # IZMENITI PUTANJU!
+    # path = "C:\\Users\\Milica\\Desktop\\python-2.7.7-docs-html"
 
     print("Starting search engine \n")
     print("Loading files, please wait.")
@@ -62,8 +62,8 @@ def main():
 
                     if found:
                         calculate_ranks(files)
-                        for f in files.elements:
-                            print("\n", f, files.elements[f])
+                        for f in files:
+                            print("\n", f, files[f])
 
                 elif choice_menu_two.lower() == "b":
                     search_text = input("Unesite reci koje zelite da pretrazite razdvojene razmakom:\n")
@@ -73,13 +73,12 @@ def main():
 
                     for word in search_words:
                         found, files = t.search(word.lower().strip())
-                        if found:
-                            result_set = result_set.union(files)
+                        result_set = result_set | files
 
                     calculate_ranks(result_set)
 
-                    for f in result_set.elements:
-                        print("\n", f, result_set.elements[f])
+                    for f in result_set:
+                        print("\n", f, result_set[f])
 
                 elif choice_menu_two.lower() == "c":
                     query = input("Unesite dve reci koje zelite odvojene separatorom AND/OR/NOT:\n"
@@ -102,49 +101,48 @@ def main():
                         found, files = t.search(search_word.lower())
                         result_set = all_files
 
-                        if found:
-                            result_set = all_files.minus(files)
+                        result_set = all_files - files
 
                         calculate_ranks(result_set)
 
-                        for f in result_set.elements:
-                            print("\n", f, result_set.elements[f])
+                        for f in result_set:
+                            print("\n", f, result_set[f])
 
                     elif len(length_check) == 3 and length_check[1] == "OR":
 
                         found1, files1 = t.search(length_check[0].lower().strip())
                         found2, files2 = t.search(length_check[2].lower().strip())
 
-                        result_set = files1.union(files2)
+                        result_set = files1 | files2
 
                         calculate_ranks(result_set)
 
-                        for f in result_set.elements:
-                            print("\n", f, result_set.elements[f])
+                        for f in result_set:
+                            print("\n", f, result_set[f])
 
                     elif len(length_check) == 3 and length_check[1] == "NOT":
 
                         found1, files1 = t.search(length_check[0].lower().strip())
                         found2, files2 = t.search(length_check[2].lower().strip())
 
-                        result_set = files1.minus(files2)
+                        result_set = files1 - files2
 
                         calculate_ranks(result_set)
 
-                        for f in result_set.elements:
-                            print("\n", f, result_set.elements[f])
+                        for f in result_set:
+                            print("\n", f, result_set[f])
 
                     elif len(length_check) == 3 and length_check[1] == "AND":
 
                         found1, files1 = t.search(length_check[0].lower().strip())
                         found2, files2 = t.search(length_check[2].lower().strip())
 
-                        result_set = files1.intersect(files2)
+                        result_set = files1 & files2
 
                         calculate_ranks(result_set)
 
-                        for f in result_set.elements:
-                            print("\n", f, result_set.elements[f])
+                        for f in result_set:
+                            print("\n", f, result_set[f])
 
                     else:
                         print("Nije ispravno unet upit."
