@@ -1,3 +1,6 @@
+from util.page_sorter import Page
+
+
 class MySet:
     def __init__(self):
         self._elements = {}  # key - putanja fajla, value - broj ponavljanja reci u fajlu
@@ -103,3 +106,11 @@ class MySet:
 
     def __str__(self):
         return str(self.elements)
+
+    def toList(self):
+        list_repr = []
+        for element in self:
+            list_repr.append(Page(element, self[element]))
+
+        return list_repr
+
