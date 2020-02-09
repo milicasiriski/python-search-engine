@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 
 from util.graph import Graph
+from util.page_sorter import heapSort
 from util.parserHTML import Parser
 from util.rank_calculator import RankValues
 from util.set import MySet
@@ -12,12 +13,10 @@ g = Graph()
 all_files = MySet()
 
 
-
-
 def main():
 
-    path = "C:\\Users\\Luka Doric\\Desktop\\python-2.7.7-docs-html"  # IZMENITI PUTANJU!
-    # path = "C:\\Users\\Milica\\Desktop\\python-2.7.7-docs-html"
+    # path = "C:\\Users\\Luka Doric\\Desktop\\python-2.7.7-docs-html"  # IZMENITI PUTANJU!
+    path = "C:\\Users\\Milica\\Desktop\\python-2.7.7-docs-html"
 
     print("Starting search engine \n")
     print("Loading files, please wait.")
@@ -62,8 +61,10 @@ def main():
 
                     if found:
                         calculate_ranks(files)
-                        for f in files:
-                            print("\n", f, files[f])
+                        search_results = files.toList()
+                        heapSort(search_results)
+                        for result in search_results:
+                            print("\n", result.path, result.rank)
 
                 elif choice_menu_two.lower() == "b":
                     search_text = input("Unesite reci koje zelite da pretrazite razdvojene razmakom:\n")
@@ -76,9 +77,11 @@ def main():
                         result_set = result_set | files
 
                     calculate_ranks(result_set)
+                    search_results = result_set.toList()
+                    heapSort(search_results)
 
-                    for f in result_set:
-                        print("\n", f, result_set[f])
+                    for result in search_results:
+                        print("\n", result.path, result.rank)
 
                 elif choice_menu_two.lower() == "c":
                     query = input("Unesite dve reci koje zelite odvojene separatorom AND/OR/NOT:\n"
@@ -104,9 +107,11 @@ def main():
                         result_set = all_files - files
 
                         calculate_ranks(result_set)
+                        search_results = result_set.toList()
+                        heapSort(search_results)
 
-                        for f in result_set:
-                            print("\n", f, result_set[f])
+                        for result in search_results:
+                            print("\n", result.path, result.rank)
 
                     elif len(length_check) == 3 and length_check[1] == "OR":
 
@@ -116,9 +121,11 @@ def main():
                         result_set = files1 | files2
 
                         calculate_ranks(result_set)
+                        search_results = result_set.toList()
+                        heapSort(search_results)
 
-                        for f in result_set:
-                            print("\n", f, result_set[f])
+                        for result in search_results:
+                            print("\n", result.path, result.rank)
 
                     elif len(length_check) == 3 and length_check[1] == "NOT":
 
@@ -128,9 +135,11 @@ def main():
                         result_set = files1 - files2
 
                         calculate_ranks(result_set)
+                        search_results = result_set.toList()
+                        heapSort(search_results)
 
-                        for f in result_set:
-                            print("\n", f, result_set[f])
+                        for result in search_results:
+                            print("\n", result.path, result.rank)
 
                     elif len(length_check) == 3 and length_check[1] == "AND":
 
@@ -140,13 +149,16 @@ def main():
                         result_set = files1 & files2
 
                         calculate_ranks(result_set)
+                        search_results = result_set.toList()
+                        heapSort(search_results)
 
-                        for f in result_set:
-                            print("\n", f, result_set[f])
+                        for result in search_results:
+                            print("\n", result.path, result.rank)
 
                     else:
                         print("Nije ispravno unet upit."
                               " Proverite da li ste uneli separatore AND/OR/NOT velikim slovima!\n")
+
 
 def load_files(path):  # ubacivanje reci iz html fajlova
     for file_name in os.listdir(path):
