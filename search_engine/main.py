@@ -14,24 +14,31 @@ all_files = MySet()
 
 
 def main():
+    path = "C:\\Users\\Luka Doric\\Desktop\\python-2.7.7-docs-html"  # IZMENITI PUTANJU!
+    # path = "C:\\Users\\Milica\\Desktop\\python-2.7.7-docs-html"
 
-    # path = "C:\\Users\\Luka Doric\\Desktop\\python-2.7.7-docs-html"  # IZMENITI PUTANJU!
-    path = "C:\\Users\\Milica\\Desktop\\python-2.7.7-docs-html"
+    while True:
+        path = input("Unesite korenski direktorijum.\n")
 
-    print("Starting search engine \n")
-    print("Loading files, please wait.")
-    start = datetime.now()
-    load_files(path)
-    end = datetime.now()
-    print("Vreme ucitavanja:", end - start)
+        try:
+            start = datetime.now()
+            print("Starting search engine \n")
+            print("Loading files, please wait.")
+            load_files(path)
+            end = datetime.now()
+            break
+        except:
+            print("Nije pravilno uneta putanja unesite opet!")
+
+    print("Vreme ucitavanja: ", end - start)
 
     for file in g.outgoing:
         all_files.add(file)
 
     while True:
 
-        choice_menu_one = input ("Za pretragu .html dokumenata unesite Y/y\n"
-                                 "za izlazak iz programa unesit X/x.\n")
+        choice_menu_one = input("Za pretragu .html dokumenata unesite Y/y\n"
+                                "za izlazak iz programa unesit X/x.\n")
 
         if choice_menu_one.lower() == "x":
             break
@@ -39,10 +46,10 @@ def main():
 
             while True:
 
-                choice_menu_two = input ("Za pretragu jedne reci unesite A/a\n"
-                                         "Za pretragu vise reci odvojene razmakom unesite B/b\n"
-                                         "Za pretragu dve reci odvojenih sa AND/OR/NOT unesite C/c\n"
-                                         "Za povratak na prethodni meni unesite X/x\n")
+                choice_menu_two = input("Za pretragu jedne reci unesite A/a\n"
+                                        "Za pretragu vise reci odvojene razmakom unesite B/b\n"
+                                        "Za pretragu dve reci odvojenih sa AND/OR/NOT unesite C/c\n"
+                                        "Za povratak na prethodni meni unesite X/x\n")
 
                 if choice_menu_two.lower() == "x":
                     break
