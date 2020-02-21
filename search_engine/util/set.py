@@ -98,8 +98,16 @@ class MySet:
     def __contains__(self, item):
         return item in self.elements
 
+    @property
     def words_in_total(self):
         return sum(self.elements.values())
+
+    @property
+    def words_on_average(self):
+        if len(self.elements) != 0:
+            return float(sum(self.elements.values())/len(self.elements))
+        else:
+            return 0
 
     def __repr__(self):
         return repr(self.elements)
