@@ -38,7 +38,7 @@ def main():
     while True:
 
         choice_menu_one = input("Za pretragu .html dokumenata unesite Y/y\n"
-                                "za izlazak iz programa unesit X/x.\n")
+                                "za izlazak iz programa unesite X/x.\n")
 
         if choice_menu_one.lower() == "x":
             break
@@ -66,12 +66,9 @@ def main():
 
                     found, files = t.search(search_word.lower())
 
-                    if found:
-                        search_results = calculate_ranks(files)
-                        heapSort(search_results)
-                        for i in range(len(search_results)):
-                            path = search_results[i].path
-                            print(str(i), path, "rang:", search_results[i].rank, "linkovi:", len(g.incoming[path]), "reci:", files[path])
+                    search_results = calculate_ranks(files)
+                    heapSort(search_results)
+                    paginate(search_results)
 
                 elif choice_menu_two.lower() == "b":
                     search_text = input("Unesite reci koje zelite da pretrazite razdvojene razmakom:\n")
@@ -94,10 +91,7 @@ def main():
                         page.rank *= contains_words
 
                     heapSort(search_results)
-
-                    for i in range(len(search_results)):
-                        path = search_results[i].path
-                        print(str(i), path, "rang:", search_results[i].rank, "linkovi:", len(g.incoming[path]), "reci:", result_set[path])
+                    paginate(search_results)
 
                 elif choice_menu_two.lower() == "c":
                     query = input("Unesite dve reci koje zelite odvojene separatorom AND/OR/NOT:\n"
@@ -123,11 +117,7 @@ def main():
 
                         search_results = calculate_ranks(result_set)
                         heapSort(search_results)
-
-                        for i in range(len(search_results)):
-                            path = search_results[i].path
-                            print(str(i), path, "rang:", search_results[i].rank, "linkovi:", len(g.incoming[path]),
-                                  "reci:", result_set[path])
+                        paginate(search_results)
 
                     elif len(length_check) == 3 and length_check[1] == "OR":
 
@@ -142,11 +132,7 @@ def main():
                                 result.rank *= 2
 
                         heapSort(search_results)
-
-                        for i in range(len(search_results)):
-                            path = search_results[i].path
-                            print(str(i), path, "rang:", search_results[i].rank, "linkovi:", len(g.incoming[path]),
-                                  "reci:", result_set[path])
+                        paginate(search_results)
 
                     elif len(length_check) == 3 and length_check[1] == "NOT":
 
@@ -157,11 +143,7 @@ def main():
 
                         search_results = calculate_ranks(result_set)
                         heapSort(search_results)
-
-                        for i in range(len(search_results)):
-                            path = search_results[i].path
-                            print(str(i), path, "rang:", search_results[i].rank, "linkovi:", len(g.incoming[path]),
-                                  "reci:", result_set[path])
+                        paginate(search_results)
 
                     elif len(length_check) == 3 and length_check[1] == "AND":
 
@@ -172,11 +154,7 @@ def main():
 
                         search_results = calculate_ranks(result_set)
                         heapSort(search_results)
-
-                        for i in range(len(search_results)):
-                            path = search_results[i].path
-                            print(str(i), path, "rang:", search_results[i].rank, "linkovi:", len(g.incoming[path]),
-                                  "reci:", result_set[path])
+                        paginate(search_results)
 
                     else:
                         print("Nije ispravno unet upit."
@@ -239,6 +217,61 @@ def calculate_ranks(search_results: MySet, max_iter=100):
         if page in search_results:
             final_list.append(Page(page, pages[page].old_value))
     return final_list
+
+
+def paginate(search_results):
+    answer = ""
+    curr_page = 0
+    n = 10  # broj putanja koje ce se prikazati po stranici default=10
+    num_of_pages = int(len(search_results) / n) + 1
+    while answer.lower() != "x":
+
+        for i in range(n):
+            index = curr_page*n + i
+            if index < len(search_results):
+                print(search_results[i].path, search_results[index].rank)
+
+        print("")
+        print("Trenutno ste na stranici:", curr_page+1, "/", num_of_pages)
+        if curr_page != 0:
+            print("P - povratak na prethodnu stranicu")
+        if curr_page != num_of_pages - 1:
+            print("N - odlazak na sledecu stranicu")
+        print("G - odlazak na zadatu stranicu")
+        print("C - promena broja putanja koje se prikazuju po stranici")
+        answer = input("X - povratak na meni za pretragu\n")
+
+        if answer.lower() == "p" and curr_page != 0:
+            curr_page -= 1
+        elif answer.lower() == "n" and curr_page != num_of_pages-1:
+            curr_page += 1
+        elif answer.lower() == "g":
+            while True:
+                user_input = input("Unesite broj stranice koju zelite da prikazete:\n")
+                try:
+                    new_curr = int(user_input)
+                    if new_curr <= 0 or new_curr > num_of_pages:
+                        print("Stranica koju ste uneli nije dostupna.")
+                    else:
+                        curr_page = new_curr - 1
+                        break
+                except ValueError:
+                    print("Neispravan unos. Molim Vas unesite prirodan broj.")
+
+        elif answer.lower() == "c":
+            while True:
+                user_input = input("Unesite novi broj putanja za prikaz:\n")
+                try:
+                    new_n = int(user_input)
+                    if new_n <= 0:
+                        print("Neispravan unos. Molim Vas unesite prirodan broj.")
+                    else:
+                        n = new_n
+                        num_of_pages = int(len(search_results) / n) + 1
+                        curr_page = 0
+                        break
+                except ValueError:
+                    print("Neispravan unos. Molim Vas unesite prirodan broj.")
 
 
 main()
