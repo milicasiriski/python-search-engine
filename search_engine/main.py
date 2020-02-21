@@ -14,11 +14,11 @@ all_files = MySet()
 
 
 def main():
-    # path = "C:\\Users\\Luka Doric\\Desktop\\python-2.7.7-docs-html"  # IZMENITI PUTANJU!
-    path = "C:\\Users\\Milica\\Desktop\\python-2.7.7-docs-html"
+   #path = "C:\\Users\\Luka Doric\\Desktop\\python-2.7.7-docs-html"  # IZMENITI PUTANJU!
+   # path = "C:\\Users\\Milica\\Desktop\\python-2.7.7-docs-html"
 
     while True:
-        #path = input("Unesite korenski direktorijum.\n")
+        path = input("Unesite korenski direktorijum.\n")
 
         try:
             start = datetime.now()
@@ -27,7 +27,7 @@ def main():
             load_files(path)
             end = datetime.now()
             break
-        except:
+        except OSError:
             print("Nije pravilno uneta putanja unesite opet!")
 
     print("Vreme ucitavanja: ", end - start)
@@ -101,15 +101,15 @@ def main():
 
                     length_check = query.split()
 
-                    if not (len(length_check) != 2 or len(length_check) != 3):
-                        print("Niste uneli ispravan format!")
+                    if not (len(length_check) == 2 or len(length_check) == 3):
+                        print("Niste uneli ispravan format! Unos se moze sastojati samo od 2 ili 3 reci ukljucujuci i AND/OR/NOT")
                         continue
 
-                    if len(length_check) == 2 and length_check[0] != "NOT":
-                        print("Niste uneli ispravan format!")
+                    if len(length_check) == 2 and length_check[0].upper() != "NOT":
+                        print("Niste uneli ispravan format! Ukoliko unosite dve reci prva mora biti NOT")
                         continue
 
-                    elif len(length_check) == 2 and length_check[0] == "NOT":
+                    if len(length_check) == 2 and length_check[0].upper() == "NOT":
                         search_word = length_check[1].strip()
                         found, files = t.search(search_word.lower())
 
@@ -119,7 +119,7 @@ def main():
                         heapSort(search_results)
                         paginate(search_results)
 
-                    elif len(length_check) == 3 and length_check[1] == "OR":
+                    elif len(length_check) == 3 and length_check[1].upper() == "OR":
 
                         found1, files1 = t.search(length_check[0].lower().strip())
                         found2, files2 = t.search(length_check[2].lower().strip())
@@ -134,7 +134,7 @@ def main():
                         heapSort(search_results)
                         paginate(search_results)
 
-                    elif len(length_check) == 3 and length_check[1] == "NOT":
+                    elif len(length_check) == 3 and length_check[1].upper() == "NOT":
 
                         found1, files1 = t.search(length_check[0].lower().strip())
                         found2, files2 = t.search(length_check[2].lower().strip())
@@ -145,7 +145,7 @@ def main():
                         heapSort(search_results)
                         paginate(search_results)
 
-                    elif len(length_check) == 3 and length_check[1] == "AND":
+                    elif len(length_check) == 3 and length_check[1].upper() == "AND":
 
                         found1, files1 = t.search(length_check[0].lower().strip())
                         found2, files2 = t.search(length_check[2].lower().strip())
@@ -158,7 +158,7 @@ def main():
 
                     else:
                         print("Nije ispravno unet upit."
-                              " Proverite da li ste uneli separatore AND/OR/NOT velikim slovima!\n")
+                              " Proverite da li ste ispravno uneli separatore AND/OR/NOT!\n")
 
 
 def load_files(path):  # ubacivanje reci iz html fajlova
