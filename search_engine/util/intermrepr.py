@@ -6,6 +6,18 @@ class Or:
     def __str__(self):
         return "Or(" + str(self.left) + ", " + str(self.right) + ")"
 
+    def evaluate(self, trie, global_set):
+        if isinstance(self.left, str):
+            found, left = trie.search(self.left)  # u projektu ce se ovde pozivati pretraga
+        else:
+            left = self.left.evaluate(trie, global_set)
+        if isinstance(self.right, str):
+            found, right = trie.search(self.right) # u projektu ce se ovde pozivati pretraga
+        else:
+            right = self.right.evaluate(trie, global_set)
+
+        return left | right
+
 
 class And:
     def __init__(self, left, right):
@@ -15,6 +27,18 @@ class And:
     def __str__(self):
         return "And(" + str(self.left) + ", " + str(self.right) + ")"
 
+    def evaluate(self, trie, global_set):
+        if isinstance(self.left, str):
+            found, left = trie.search(self.left)  # u projektu ce se ovde pozivati pretraga
+        else:
+            left = self.left.evaluate(trie, global_set)
+        if isinstance(self.right, str):
+            found, right = trie.search(self.right)  # u projektu ce se ovde pozivati pretraga
+        else:
+            right = self.right.evaluate(trie, global_set)
+
+        return left & right
+
 
 class Not:
     def __init__(self, child):
@@ -22,6 +46,14 @@ class Not:
 
     def __str__(self):
         return "Not(" + str(self.child) + ")"
+
+    def evaluate(self, trie, global_set):
+        if isinstance(self.child, str):
+            found, child = trie.search(self.child)  # u projektu ce se ovde pozivati pretraga
+        else:
+            child = self.child.evaluate(trie, global_set)
+
+        return global_set - child
 
 
 ir_actions = {
