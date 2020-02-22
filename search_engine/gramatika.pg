@@ -1,0 +1,46 @@
+
+or_exp:
+    and_exp
+    | or_exp or_op and_exp
+    ;
+
+and_exp:
+    not_exp
+    | and_exp and_op not_exp
+    ;
+
+not_exp:
+    exp
+    | not_op exp
+    ;
+
+exp:
+    word
+    | LPAREN or_exp RPAREN
+    ;
+
+terminals
+or_op:
+    '||'
+    ;
+
+and_op:
+    '&&'
+    ;
+
+not_op:
+    '!'
+    ;
+
+LPAREN:
+    '('
+    ;
+
+RPAREN:
+    ')'
+    ;
+
+word:
+    /[^\s^(^)^!]+/
+    ;
+
