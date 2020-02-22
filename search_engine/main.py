@@ -1,12 +1,16 @@
 import os
 from datetime import datetime
 
+from parglare import ParseError
+
 from util.graph import Graph
 from util.page_sorter import heapSort, Page
 from util.parserHTML import Parser
 from util.rank_calculator import RankValues
 from util.set import MySet
 from util.trie import Trie
+
+from util.cqp import ComplexQueryParser
 
 t = Trie()
 g = Graph()
@@ -49,6 +53,7 @@ def main():
                 choice_menu_two = input("Za pretragu jedne reci unesite A/a\n"
                                         "Za pretragu vise reci odvojene razmakom unesite B/b\n"
                                         "Za pretragu dve reci odvojenih sa AND/OR/NOT unesite C/c\n"
+                                        "Za kompleksnu pretragu unesite D/d\n"
                                         "Za povratak na prethodni meni unesite X/x\n")
 
                 if choice_menu_two.lower() == "x":
@@ -157,8 +162,17 @@ def main():
                         paginate(search_results)
 
                     else:
-                        print("Nije ispravno unet upit."
-                              " Proverite da li ste ispravno uneli separatore AND/OR/NOT!\n")
+                        print("Nije ispravno unet upit. Proverite da li ste ispravno uneli separatore AND/OR/NOT!\n")
+
+                elif choice_menu_two.lower() == "d":
+                    print("Usli ste u naprednu pretragu! Operatori su &&/||/! takodje je dozvoljena upotreba zagradi!")
+                    cqp = ComplexQueryParser()
+                    complex_query = input("Kompleksan upit:\n")
+                    try:
+                        ir_tree = cqp.parse(complex_query)
+                        print(ir_tree)
+                    except ParseError:
+                        print("Niste ispravno uneli kompleksan upit!")
 
 
 def load_files(path):  # ubacivanje reci iz html fajlova
