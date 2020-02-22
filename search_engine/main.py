@@ -177,7 +177,10 @@ def main():
                     try:
                         ir_tree = cqp.parse(complex_query)
                         print(ir_tree)
-                        result_set = ir_tree.evaluate(t, all_files)
+                        if isinstance(ir_tree, str):
+                            _, result_set = t.search(ir_tree)
+                        else:
+                            result_set = ir_tree.evaluate(t, all_files)
                         search_results = calculate_ranks(result_set)
                         heapSort(search_results)
                         rank_to_percentage(search_results)
