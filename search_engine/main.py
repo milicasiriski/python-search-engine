@@ -73,6 +73,7 @@ def main():
 
                     search_results = calculate_ranks(files)
                     heapSort(search_results)
+                    rank_to_percentage(search_results)
                     paginate(search_results)
 
                 elif choice_menu_two.lower() == "b":
@@ -96,6 +97,7 @@ def main():
                         page.rank *= contains_words
 
                     heapSort(search_results)
+                    rank_to_percentage(search_results)
                     paginate(search_results)
 
                 elif choice_menu_two.lower() == "c":
@@ -122,6 +124,7 @@ def main():
 
                         search_results = calculate_ranks(result_set)
                         heapSort(search_results)
+                        rank_to_percentage(search_results)
                         paginate(search_results)
 
                     elif len(length_check) == 3 and length_check[1].upper() == "OR":
@@ -137,6 +140,7 @@ def main():
                                 result.rank *= 2
 
                         heapSort(search_results)
+                        rank_to_percentage(search_results)
                         paginate(search_results)
 
                     elif len(length_check) == 3 and length_check[1].upper() == "NOT":
@@ -148,6 +152,7 @@ def main():
 
                         search_results = calculate_ranks(result_set)
                         heapSort(search_results)
+                        rank_to_percentage(search_results)
                         paginate(search_results)
 
                     elif len(length_check) == 3 and length_check[1].upper() == "AND":
@@ -159,6 +164,7 @@ def main():
 
                         search_results = calculate_ranks(result_set)
                         heapSort(search_results)
+                        rank_to_percentage(search_results)
                         paginate(search_results)
 
                     else:
@@ -174,6 +180,7 @@ def main():
                         result_set = ir_tree.evaluate(t, all_files)
                         search_results = calculate_ranks(result_set)
                         heapSort(search_results)
+                        rank_to_percentage(search_results)
                         paginate(search_results)
                     except ParseError:
                         print("Niste ispravno uneli kompleksan upit!")
@@ -291,6 +298,15 @@ def paginate(search_results):
                         break
                 except ValueError:
                     print("Neispravan unos. Molim Vas unesite prirodan broj.")
+
+
+def rank_to_percentage(search_results):
+    total = 0
+    for result in search_results:
+        total += result.rank
+
+    for result in search_results:
+        result.rank = result.rank * 100 / total
 
 
 main()
