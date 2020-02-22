@@ -19,7 +19,7 @@ all_files = MySet()
 
 def main():
    #path = "C:\\Users\\Luka Doric\\Desktop\\python-2.7.7-docs-html"  # IZMENITI PUTANJU!
-   # path = "C:\\Users\\Milica\\Desktop\\python-2.7.7-docs-html"
+   # path = "C:\Users\Milica\Desktop\python-2.7.7-docs-html"
 
     while True:
         path = input("Unesite korenski direktorijum.\n")
@@ -171,6 +171,10 @@ def main():
                     try:
                         ir_tree = cqp.parse(complex_query)
                         print(ir_tree)
+                        result_set = ir_tree.evaluate(t, all_files)
+                        search_results = calculate_ranks(result_set)
+                        heapSort(search_results)
+                        paginate(search_results)
                     except ParseError:
                         print("Niste ispravno uneli kompleksan upit!")
 
