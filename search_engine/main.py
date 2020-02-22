@@ -247,7 +247,7 @@ def paginate(search_results):
         for i in range(n):
             index = curr_page*n + i
             if index < len(search_results):
-                print(search_results[i].path, search_results[index].rank)
+                print(search_results[index].path, search_results[index].rank)
 
         print("")
         print("Trenutno ste na stranici:", curr_page+1, "/", num_of_pages)
@@ -284,9 +284,10 @@ def paginate(search_results):
                     if new_n <= 0:
                         print("Neispravan unos. Molim Vas unesite prirodan broj.")
                     else:
+                        first_on_page = n * curr_page
                         n = new_n
                         num_of_pages = int(len(search_results) / n) + 1
-                        curr_page = 0
+                        curr_page = int(first_on_page / n)
                         break
                 except ValueError:
                     print("Neispravan unos. Molim Vas unesite prirodan broj.")
