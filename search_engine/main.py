@@ -1,4 +1,5 @@
 import os
+import sys
 from datetime import datetime
 
 from parglare import ParseError
@@ -18,11 +19,11 @@ all_files = MySet()
 
 
 def main():
-   #path = "C:\\Users\\Luka Doric\\Desktop\\python-2.7.7-docs-html"  # IZMENITI PUTANJU!
-   # path = "C:\Users\Milica\Desktop\python-2.7.7-docs-html"
-
     while True:
-        path = input("Unesite korenski direktorijum.\n")
+        path = input("Unesite korenski direktorijum.\nZa izlazak iz programa unesite x\X\n")
+
+        if path.lower() == "x":
+            sys.exit()
 
         try:
             start = datetime.now()
