@@ -9,6 +9,6 @@ Od biblioteka koristi:
 -> setuptools 41.2.0
 
 Ukoliko koristite Windows operativni sistem i cmd, biblioteke parglare i click se jednostavno instaliraju kroz konzolu
-kloniranjem parglare biblioteke (https://github.com/igordejanovic/parglare) i komandom pip install -e parglare.
+kloniranjem parglare biblioteke (https://github.com/igordejanovic/parglare) i komandom pip install -e parglare ili pip install parglare.
 Ukoliko koristite PyCharm IDE za Python parglare i click kao i ostale biblioteke se jednostavno mogu instalirati na sledeci nacin:
 File -> Settings -> Project: python-search-engine (padajuci meni) -> Project Interpreter (na + dodati zeljenu biblioteku).
